@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>KEEP THINGS IN MIND AND DON'T GET ANOTHER WIFEY</title>
+
+<style>
+  :root{
+    --orangish:#ff6b4a;
+    --pastel-purple:#6b5cff;
+    --text:#2c2c2c;
+    --bg:#fff8fa;
+  }
+
+  body{
+    font-family:"Times New Roman",serif;
+    background:var(--bg);
+    margin:0;
+    padding:0;
+    color:var(--text);
+    display:flex;
+    min-height:100vh;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .page {
+    width:100%;
+    max-width:900px;
+    padding:36px 18px;
+    box-sizing:border-box;
+    text-align:center;
+  }
+
+  /* 3-line heading, centered and stacked */
+  .heading-line1{
+    font-size:1.6rem;
+    font-weight:700;
+    color:var(--text);
+    margin-bottom:6px;
+  }
+
+  .heading-line2{
+    font-size:2rem;
+    font-weight:800;
+    color:var(--orangish);
+    margin-bottom:6px;
+  }
+
+  .heading-line3{
+    font-size:1.05rem;
+    color:var(--pastel-purple);
+    margin-bottom:18px;
+  }
+
+  /* Image */
+  #mainImage{
+    width:78%;
+    max-width:420px;
+    display:block;
+    margin: 12px auto;
+    border-radius:14px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  }
+
+  /* Open button */
+  #openBtn{
+    display:inline-block;
+    background:#fff;
+    border:1px solid #ccc;
+    padding:12px 28px;
+    border-radius:12px;
+    font-size:1.05rem;
+    margin-top:18px;
+    cursor:pointer;
+    text-decoration:none;
+    color:var(--text);
+  }
+
+  /* If image fails, the alt text will appear; give some spacing */
+  .img-placeholder { margin: 12px 0; color:#666; }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="heading">
+      <div class="heading-line1">🎁❤️ Look who's turning 21!, But will always be my lil baby</div>
+      <div class="heading-line2">HAPPY BIRTHDAY CUTUUU</div>
+      <div class="heading-line3">(Bkl pyaar se likha hai ache se pura padhiyo thike, I love youu) 🎁❤️</div>
+    </div>
+
+    <!-- This uses the image file in your repo root: image.jpg -->
+    <img id="mainImage" src="image.jpg" alt="Picture" />
+
+    <!-- If you prefer a specific uploaded local path for testing you can temporarily use:
+         src="/mnt/data/c522b9a2-2560-441d-ba7c-de93f998703e.png"
+         but for GitHub Pages you MUST use the repo-relative "image.jpg" shown above.
+    -->
+
+    <!-- OPEN goes to grid.html -->
+    <a id="openBtn" href="grid.html">OPEN</a>
+  </div>
+</body>
+</html>
