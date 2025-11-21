@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Note</title>
+<style>
+  body{font-family:"Times New Roman",serif;background:#fff8fa;margin:0;padding:28px;color:#2c2c2c;}
+  #container{max-width:760px;margin:0 auto;}
+  header{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:14px;}
+  h2{margin:0;font-size:1.25rem;}
+  .controls{display:flex;gap:8px;}
+  .btn{background:#fff;border:1px solid #ccc;padding:8px 14px;border-radius:10px;text-decoration:none;color:inherit;}
+  #noteView{background:#fff0f6;padding:20px;border-radius:14px;box-shadow:0 0 8px rgba(0,0,0,.08);white-space:pre-line;text-align:left;font-size:1rem;line-height:1.45;}
+  #confettiCanvas{position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:9999;}
+</style>
+</head>
+<body>
+<div id="container">
+  <header>
+    <h2 id="title">Note</h2>
+    <div class="controls">
+      <a id="backToGrid" class="btn" href="grid.html">Back</a>
+      <a id="nextLink" class="btn" href="#">Next</a>
+    </div>
+  </header>
+
+  <div id="noteView">Loading...</div>
+</div>
+
+<canvas id="confettiCanvas"></canvas>
+
+<script>
+// NOTES (same content as before — keep text exactly as you want)
+const notes = [
+`1 — Happiest Birthday My Baby honestly I have no idea what I did to deserve you,my life has been much brighter and happier since i've met you. i am endlessly grateful and fortunate to have been blessed with someone as kind and loving as you. You mean everything to me, as if nothing mattered in the world, except for you, the love of my life. You are my one and only cutuu baby and never want to lose. And just know that I'm here to stay, I'm not gonna leave you, & no matter what happens I will never stop loving you. Because you are my the favorite person and I wish you all the damn happiness of this universe because you deserve all the happiness a person can get.I love you the mosttt my babyy and a big sorry and I love you always n forever`,
+`2 — Pta haiii - The best part of Growing together like passing years every birthday passing by  just hoping aage we would be together and I'll be giving you lots of kisses and huggs on birthdays abhi ke liye virtuals all for only you obviously my baby , Kitna cute rahega na sab! And fuckin cutest thing getting old together when our hairs will start getting grey fine lines on face Ek sec tujhe mai tab bhi cute lagaungi na? Bc Abhi lagti hun phele ye confirm ho :)`,
+`3 — Kartik ,I wanna be that person to you that supports you through everything. With every step you take even every breath you take. I always want to be the person that tell you everything will be fine with time and tell you no matter what i will alwys love you. And i'm just waiting for the moment to look into your eyes and say that you are the only person in the world that i have ever love and nothing can change`,
+`4 — I just hope one day soon very soon you believe in me about everything and won't overthink stuffs because I don't want you to think like that and feel bad bc bura lagta hai ki meri vjh se tu aise sochra hai what should I do ? Come there and give you a tight big hugg? I wish I could. I lovee youuu the mostt my babyy my only only only babyyy.`,
+`5 — You Mr Kartik Nautiyal having you in my life just feels nothing less than a blessing THE ONE (cuz you are all i ever imagined the one to be)i mean fr bkc & now the fact that we already spend 3 summers together it feels nothing less than true soulmates JO HUM HAI. If I’ve ever been lucky in this goddamn life, it’s only when i met you`,
+`6 — Ek na ganne ki line hai teenage dream ki 'I finally found you, my missing puzzle piece I'm complete' and that's completely true with you. Don't you ever think that you are just a just a guy, to me you are the most precious soul, and my most favorite part of this entire world.`,
+`7 — You are MOST ADORABLE MY BABY, I've never actually felt this loved and cared maltb kabhi kabhi pta ni kaise karta hai bkc bich bich mai tujhe koi aur pasand aa jati hai kya ki mai pasand aani band ho jati hun? Bkl but pta hai kya okay fuck youu I LOVE YOU SOSOSO MUCH  and i promise to treat you delicately bcuz you are chhotuu bachaa of mine.`,
+`8 — I literally manifest for reall like Bohot jaldi maltb bohot bohot jaldi I will literally hold by you tightly forever like we will never get apart and lots of lots of kisses.`,
+`9 — And whenever you have overthinking about anything tension ho chizo ko leke Baby just remember everything will get best for you more than imagined i promise just believe in yourself bohot smart hai tu and i'll be alwys here with you no matter what`,
+`10 — 18 by one direction also bkc 1D is the best band PYAAR THA MERA ek time pe matlb ab to sirf tu hai sabse hai zyda meethe ko bhi side kardiya tere liye to, Haan to this is the song i used to listen since my teens started and always thought ki koi aaega and just fuck it and mc touchwood kartik I was 18 when i met you BEST. Hum log na dance karenge is song pe when we will meet Okay?`,
+`11 — Ik we haven't met yet but pta nhi yaar at some deep point of thought it feels like i have felt ik i have hugged you the kind of comfort just brings in when we are on call especailly video call (haa mujhe sharam bohot aati hai ) but still seeing your face that uplift of cheeks when you smiling your laugh your hairs you eyes your lips obviously but bkc only i can kiss them You're just the cutest to ever exist in whole damn universe meri rasmali hai tu nahi ruk kaju katli nahi Sari meethai bkc Kha jaaungi mai tujhe ksm se Mwahhh`,
+`12 — You know what If Live is a movie You are my best part, Haan reel mai dekha tha but It's true bitch. You are special to me and ik i'm not perfect by any means but i want to be perfect for you.I hope you know that everytime i tell you I LOVE YOU i mean it with my entire heart there are millions things i wish i could say to you and at this point this is probably the only way i can do I think so idk`,
+`13 — And yes I'm sorry  sorry sorrry sorryy for everything i ever did and also ever said ik that hurt you sorry sorry sorry par kartik sach mai , Mai na tere saath sochti nahi hun bolne se phele mazak mai bhi zyda bol jati hun flow flow jo kahi se bhi maltb ka nahi hota Bhai tu jaan hai mera legit JAAN`,
+`14 — I would never think of hurting you even i'm growing and learning with you bc dheere dheere dekhna trust build kar lungi behncho bas itna ik that i never ever want to lose you bkc meri to sach mai jaan basti hai meri tere mai and FOR REAL BITCH.`,
+`15 — I just wanna kiss you every second of every minute of every hour of everyday. I know that's not realistic, but it is sure as hell you don't stop me from doing so. Every night before sleeping i just imagine being hold in your arms, and feel you squeezing me within and we snuggling together tight tight just make you feel wanted. Comforted Prioritized Loved (most importantly) cuz you are just a lil baby of mine, holding your hands , as I put my legs over yours, all cute and shit. We dancing.  You talking about all the things that excites you and bich bich we kissing vo deep conversations which make both of us feeling so loved Jaldi sach hoga ye haina? Manifesting Manifesting. Okay for now, I'll meet you in my dreams again bye`,
+`16 — I wish you could be me for one day then maybe just maybe you could feel how for you Maybe just maybe then you will realize I love you more than words will EVER be able to describe better pta hai they haven't even made words to describe what you mean to me. You're my best friend my boyfriend my husband my everything I see my whole universe I see. I see the most caring loving generous kindhearted hardworking funny talented smart amazing wonderful kind protective loyal and the most incredible guy I know. I'm ALWAYS here for you when nobody else is`,
+`17 — Tujhe pta hai jab tune merese breakup karliya tha Haan maltb vohi kiya tha zyda mat bol kaise ekdum jese mann hi na ho baat kya kuch bhi merese related  Haan to uss time na na bc reels pe vo ni aate ki aise karo aise manifest karo aise paper pe likho he will come back bkc sab kiya tha kabhi kabhi to lagta hai saath saath mai neet bhi vese hi mang leti Jese tu life mai aagya vo bhi mil jata par chal chhord par bhai terese sach mai pyaar hai I love you baby my cutuuu`,
+`18 — Just a reminder bkl movie date kab hogi mister ye batao bkc alteast To all boys I ever loved before to dekh leta itni baar bola list bani hui hai puri. PURI 2000s ROMCOM DEKHNI HAI BKL SAATH MAI!!`,
+`19 — Pta hai I read this poem kahi pe bc soso relatable from my side- It was not love at first sight No at least not for me Falling for you is so much sweeter, It was like reading a book for the first time And every page pulls you deeper. An anticipation to know more A curiosity buring behind my eyes,Falling for you is a pleasant surprise  Haina pyaari  Ilove you kartik`,
+`20 — If you are still reading this and didn't get bored yet ,Ik it's HARD BEING APART, BUT PLEASE KNOW THAT YOU'RE ALWAYS IN MY THOUGHTS AND IN MY HEART HOW WE TOGETHER BRINGS COMFORT I really wishes every time I would.be there to hold you close and I want you to know that you are only THE ONE FOR ME and I chose you not because how great guy you are but because how deep connection and soul bond I feel with you even we haven't met yet no one bkc no one can ever take you place in my heart sp please baby don't let those doubt consume you those are not gonna happen by any fucking chance You are irreplaceable and I love you very much.`,
+`21 — SO YOU'VE READ THROUGH ALL THE notes, bore to nahi kiya maine tujhe I just HOPE EACH ONE BROUGHT YOu A REMINDER OF HOW DEEPLY i CARE FOR YOU. Ekdum dil ki baat kari hai and at last sirf itna hi bolna hai kartik I really love you very much from very part of me and I won't say you anything if you ever stop loving me and pta nahi maine aisa kyu bola bas okah ,Maine aajtak kabhi kisi ko leke na itna sochta hai na kisi ki parvah ki hai na kisi se itna farak pada hai jitna tere saath hai aur kisi aur ke saath kabhi chaiye bhi nahi.Ek hai bohot hai and you're more than perfect for me...`
+];
+
+// parse ?i param
+function getIndexFromQuery() {
+  const params = new URLSearchParams(location.search);
+  const i = parseInt(params.get('i'));
+  return Number.isNaN(i) ? 0 : Math.max(0, Math.min(notes.length - 1, i));
+}
+
+const idx = getIndexFromQuery();
+const noteView = document.getElementById('noteView');
+const title = document.getElementById('title');
+const nextLink = document.getElementById('nextLink');
+const backToGrid = document.getElementById('backToGrid');
+
+// show note content
+noteView.textContent = notes[idx];
+title.textContent = `Note ${idx + 1} of ${notes.length}`;
+
+// next/back links
+if (idx < notes.length - 1) {
+  nextLink.href = `note.html?i=${idx + 1}`;
+  nextLink.style.display = 'inline-block';
+} else {
+  nextLink.style.display = 'none';
+}
+
+// confetti canvas
+const confettiCanvas = document.getElementById('confettiCanvas');
+const ctx = confettiCanvas.getContext('2d');
+function resizeCanvas(){ confettiCanvas.width = innerWidth; confettiCanvas.height = innerHeight; }
+window.addEventListener('resize', resizeCanvas); resizeCanvas();
+
+const pastelColors = ['#ffd1dc','#cfe2ff','#d1ffd6','#fff1c6','#fbe7ff','#e7f7ff'];
+
+function launchConfetti(smallCount = 12) {
+  const particles = [];
+  const w = confettiCanvas.width;
+  const h = confettiCanvas.height;
+  for (let i=0;i<smallCount;i++){
+    const radius = Math.random()*6 + 3;
+    const x = (w*0.25) + Math.random()*(w*0.5);
+    const y = -10 - Math.random()*30;
+    const vx = (Math.random()-0.5)*0.6;
+    const vy = Math.random()*1.1 + 0.6;
+    const color = pastelColors[Math.floor(Math.random()*pastelColors.length)];
+    const life = 1800 + Math.random()*1200;
+    particles.push({x,y,vx,vy,radius,color,birth:Date.now(),life});
+  }
+  (function draw(){
+    ctx.clearRect(0,0,w,h);
+    const now = Date.now();
+    let alive = 0;
+    for (const p of particles){
+      const age = now - p.birth;
+      if (age > p.life) continue;
+      alive++;
+      p.vx += Math.sin((now + p.x)/900)*0.001;
+      p.vy += 0.01;
+      p.x += p.vx;
+      p.y += p.vy;
+      const alpha = Math.max(0,1 - age/p.life);
+      ctx.globalAlpha = alpha;
+      ctx.beginPath();
+      ctx.fillStyle = p.color;
+      ctx.arc(p.x,p.y,p.radius,0,Math.PI*2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    if (alive) requestAnimationFrame(draw);
+    else ctx.clearRect(0,0,w,h);
+  })();
+}
+
+// launch confetti when page loads
+launchConfetti(12);
+</script>
+</body>
+</html>
